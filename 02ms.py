@@ -6,10 +6,8 @@ path = os.path.dirname(os.path.realpath(__file__))
 file = open(path + "/02input.txt", 'r')
 
 input = []
-line = file.readline()
-while line != '':
+for line in file:
     input.append([int(x) for x in line.strip().replace('\t', ' ').split(' ')])
-    line = file.readline()
 
 #Millisecond 2
 

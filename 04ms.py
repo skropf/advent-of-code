@@ -6,13 +6,13 @@ import os
 path = os.path.dirname(os.path.realpath(__file__))
 file = open(path + "/04input.txt", 'r')
 
+input = []
+for line in file:
+    input.append(line.replace("\n", "").split(' '))
+
 counter = 0
 buffer = []
-
-for line in file:
-    line = line.replace("\n", "")
-    words = line.split(' ')
-
+for words in input:
     for word in words:
         if word in buffer: break
         else: buffer.append(word)
@@ -27,12 +27,7 @@ print(counter)
 #Millisecond 4: Second half
 counter = 0
 buffer = []
-file = open(path + "/04input.txt", 'r')
-
-for line in file:
-    line = line.replace("\n", "")
-    words = line.split(' ')
-
+for words in input:
     for word in words:
         letters = list(word)
         letters.sort()
