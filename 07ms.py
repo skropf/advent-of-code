@@ -98,7 +98,7 @@ for line in file:
         for node_identifier in node_identifiers:
             registry.add_node(registry[node_identifier], registry[parent_identifier])
 
-#getting root
+#getting root = First half
 print(registry.getroot().identifier)
 
 #Millisecond 7: Second half
@@ -110,6 +110,7 @@ def accumulated_weight(node):
     for child in node.children:
         accumulated_weight(child)
 
+#make a new tree-structure with the accumulated weights as node weights
 def walk(node, parent=None, depth=0):
     global weight
     weight = 0
@@ -120,28 +121,35 @@ def walk(node, parent=None, depth=0):
     for child in node.children:
         walk(child, output[node.identifier], depth + 1)
 
+#recursively find the error node
 def find_error(children, parent=None, correct_weight = 0):
     node_identifiers = [node.identifier for node in children]
     nodes = {identifier: output[identifier]["weight"] for identifier in node_identifiers}
+    #counting the different weights => weight with one occurence is the error weight
     weights = {list(nodes.values()).count(i):i for i in nodes.values()}
 
+    #error node found ^= parent
     if len(weights) == 1:
+        #get weight of parent
         node_weight = registry[[key for key in output.keys() if output[key] is parent][0]].weight
 
+        #calculating correct weight
         if correct_weight > parent["weight"]:
             print(node_weight + correct_weight - parent["weight"])
         else:
             print(node_weight - (parent["weight"] - correct_weight))
+    #error node in one of the children
     elif len(weights) == 2:
+        #weight with one occurence is the error weight
         error_weight = weights[1]
+        #getting correct weight from weights dict
         correct_weight = [weight for weight in weights.values() if weight != error_weight][0]
+        #getting name of error node
         error_node_identifier = [identifier for identifier in nodes if nodes[identifier] == error_weight][0]
 
+        #recursion with children of error node
         find_error(output[error_node_identifier]["children"], output[error_node_identifier], correct_weight)
 
 
 walk(registry.getroot(), None)
-
 find_error(output[next(iter(output))]["children"])
-#for entry in output.values():
-    #if entry["depth"] == 2: print(entry)
