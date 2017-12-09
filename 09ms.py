@@ -37,5 +37,6 @@ def addup_score(input):
 
     return (score, count_garbage)
 
-print(addup_score(input)[0])
-print(addup_score(input)[1])
+(score, count_garbage) = addup_score(input)
+print(score)
+print(count_garbage)
