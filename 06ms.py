@@ -7,51 +7,42 @@ file = open(path + "/06input.txt", 'r')
 input = []
 for line in file:
     for mem_bank in line.split(' '):
-        mem_bank = int(mem_bank.strip())
-        input.append(mem_bank)
+        input.append(int(mem_bank.strip()))
 
-#Millisecond 6: First half
-states = []
-buffer = input.copy()
-redistributions = 0
-while buffer not in states:
-    states.append(buffer.copy())
-    index = buffer.index(max(buffer))
+def redistribute(buffer):
+    #to save every state after redistribution
+    states = []
+    redistributions = 0
 
-    redistribution_count = buffer[index]
-    buffer[index] = 0
-    index += 1
-    while redistribution_count > 0:
-        if index == len(buffer): index = 0
+    while buffer not in states:
+        states.append(buffer.copy())
+        index = buffer.index(max(buffer))
 
-        buffer[index] += 1
-        redistribution_count -= 1
-
+        #save value to redistribute, set buffer at index to 0 and move to next element
+        redistribution_count = buffer[index]
+        buffer[index] = 0
         index += 1
 
-    redistributions += 1
+        #run till there is nothing more to distribute
+        while redistribution_count > 0:
+            if index == len(buffer): index = 0
 
+            buffer[index] += 1
+            redistribution_count -= 1
+
+            index += 1
+
+        #increase the times of redistributions done
+        redistributions += 1
+
+    return (buffer, redistributions)
+
+
+#Millisecond 6: First half
+buffer = input.copy()
+(buffer, redistributions) = redistribute(buffer)
 print(redistributions)
 
 #Millisecond 6: Second half (same code from first half just on old buffer)
-states = []
-redistributions = 0
-while buffer not in states:
-    states.append(buffer.copy())
-    index = buffer.index(max(buffer))
-
-    redistribution_count = buffer[index]
-    buffer[index] = 0
-    index += 1
-    while redistribution_count > 0:
-        if index == len(buffer): index = 0
-
-        buffer[index] += 1
-        redistribution_count -= 1
-
-        index += 1
-
-    redistributions += 1
-
-
+(buffer, redistributions) = redistribute(buffer)
 print(redistributions)

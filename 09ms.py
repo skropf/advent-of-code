@@ -7,12 +7,6 @@ file = open(path + "/09input.txt", 'r')
 input = file.read()
 
 open_groups = []
-def update_group(score, char):
-    if char is "{":
-        open_groups.append(char)
-        score += len(open_groups)
-    if char is "}": open_groups.pop()
-    return score
 
 def addup_score(input):
     i, score, count_garbage = (0, 0, 0)
@@ -20,7 +14,10 @@ def addup_score(input):
         char = input[i]
 
         #update nesting and calculating score
-        if char == "{" or char == "}": score = update_group(score, char)
+        if char is "{":
+            open_groups.append(char)
+            score += len(open_groups)
+        if char is "}": open_groups.pop()
 
         #garbage ignore everything until it closes + Second half: count garbage chars
         if char == "<":
