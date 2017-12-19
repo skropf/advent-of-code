@@ -7,9 +7,9 @@ file = open(path + "/19input.txt", 'r')
 lines = file.read().split('\n')
 
 
-#set end_char and diagram_chars manually
 diagram_chars = ['+', '-', '|', ' ']
-end_char = 'Y'
+#after last char it will go into nothingness
+end_char = ' '
 
 #get longest line to make all equal length (otherwise out-of-bounds error)
 max = 0
@@ -83,7 +83,7 @@ def running(routing_diagram, line, index, dir, steps):
 
         steps += 1
 
-    return (solution, steps)
+    return (solution, steps-1)
 
 line = 0
 index = routing_diagram[line].index('|')
