@@ -1,6 +1,5 @@
 #Millisecond 20
 import os
-from itertools import combinations
 
 path = os.path.dirname(os.path.realpath(__file__))
 file = open(path + "/20input.txt", 'r')
