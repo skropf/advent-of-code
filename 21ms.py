@@ -6,60 +6,41 @@ from math import sqrt
 path = os.path.dirname(os.path.realpath(__file__))
 file = open(path + "/21input.txt", 'r')
 
-lines = file.read().strip().replace('#', '1').replace('.', '0').split('\n')
+lines = file.read().strip().split('\n')
 
 rules = {}
 for line in lines:
     elems = line.split(" => ")
     rules[elems[0]] = elems[1]
 
-starting_pattern = ".#./..#/###".replace('#', '1').replace('.', '0').split('/')
-
+starting_pattern = ".#./..#/###".split('/')
 
 #Millisecond 21: First half
 def transform(pattern, type):
-    if len(pattern) == 2:
-        if type == "h_flip":
-            return [pattern[1], pattern[0]]
-        if type == "v_flip":
-            return [pattern[0][::-1], pattern[1][::-1]]
-        if type == "rotate":
-            return [pattern[1][0] + pattern[0][0],
-                    pattern[1][1] + pattern[0][1]]
+    if type == "rotate":
+        result = zip(*pattern[::-1])
+        return list("".join(x) for x in list(result))
 
-    if len(pattern) == 3:
-        if type == "h_flip":
-            return [pattern[2], pattern[1], pattern[0]]
-        if type == "v_flip":
-            return [pattern[0][::-1], pattern[1][::-1], pattern[2][::-1]]
-        if type == "rotate":
-            return [pattern[2][0] + pattern[1][0] + pattern[0][0],
-                    pattern[2][1] + pattern[1][1] + pattern[0][1],
-                    pattern[2][2] + pattern[1][2] + pattern[0][2]]
+    if type == "flip":
+        return list("".join(reversed(x)) for x in pattern)
 
 def get_all_transformations(pattern):
-    rot0 = pattern
-    rot90 = transform(rot0, "rotate")
-    rot180 = transform(rot90, "rotate")
-    rot270 = transform(rot180, "rotate")
+    transformations = []
+    transformations.append(pattern)
+    transformations.append(transform(transformations[0], "rotate"))
+    transformations.append(transform(transformations[1], "rotate"))
+    transformations.append(transform(transformations[2], "rotate"))
 
-    flip_h = transform(pattern, "h_flip")
-    flip_v = transform(pattern, "v_flip")
+    transformations.append(transform(pattern, "flip"))
+    transformations.append(transform(transformations[4], "rotate"))
+    transformations.append(transform(transformations[5], "rotate"))
+    transformations.append(transform(transformations[6], "rotate"))
 
-    flip_h_rot = transform(flip_h, "rotate")
-    flip_v_rot = transform(flip_v, "rotate")
-
-    yield rot0
-    yield rot90
-    yield rot180
-    yield rot270
-    yield flip_h
-    yield flip_v
-    yield flip_h_rot
-    yield flip_v_rot
+    return transformations
 
 def get_rule(pattern):
-    for p in get_all_transformations(pattern):
+    transformations = get_all_transformations(pattern)
+    for p in transformations:
         rule_key = '/'.join(p)
         if rule_key in rules:
             return rules[rule_key].split('/')
@@ -97,9 +78,9 @@ def enhance(starting_pattern):
 
 pattern = starting_pattern
 for i in range(5): pattern = enhance(pattern)
-print("/".join(pattern).count('1'))
+print("/".join(pattern).count('#'))
 
 #Millisecond 21: Second half
 pattern = starting_pattern
 for i in range(18): pattern = enhance(pattern)
-print("/".join(pattern).count('1'))
+print("/".join(pattern).count('#'))
