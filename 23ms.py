@@ -88,3 +88,24 @@ def execute2(instructions):
         b += 17
 
 print(execute2(instructions))
+
+## Explanation of second half
+# def implementation_of_instrucions():
+#     b = 81 * 100 + 100000
+#     c = b + 17000
+#     h = 0
+#
+#     while True:
+#         f = 1
+#         d = 2
+#         while d - b != 0:
+#             e = 2
+#             while e - b != 0:
+#                 if d * e - b == 0: #it will try all possible combinations of multiplicators (up to value of b)
+#                     f = 0          #[the two while conditions] and if a pair is found it is not a prime number. ==> h += 1
+#                 e += 1
+#             d += 1
+#         if f == 0: h += 1
+#         if b == c: break
+#         b += 17
+#     print(h)
