@@ -106,6 +106,6 @@ print(execute2(instructions))
 #                 e += 1
 #             d += 1
 #         if f == 0: h += 1
-#         if b == c: break
+#         if b == c: break           #increase b up to c (in this case 1000-times) and count all non-prime numbers
 #         b += 17
 #     print(h)
