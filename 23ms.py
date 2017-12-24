@@ -1,6 +1,5 @@
 #Millisecond 23
 import os
-import queue
 
 path = os.path.dirname(os.path.realpath(__file__))
 file = open(path + "/23input.txt", 'r')
