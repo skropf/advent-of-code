@@ -15,7 +15,7 @@ def create_bridges(links, type):
 
     while queue:
         #get/pop status quo of bridge, look if a link can be found (append new bridge to queue)
-        #yield results, and run till queue is empty ^= no further next_links
+        #and run till queue is empty ^= no further next_links, yield results
         next_link, strength, length, links = queue.popleft()
 
         link_found = False
