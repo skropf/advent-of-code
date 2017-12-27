@@ -8,7 +8,7 @@ file = open(path + "/24input.txt", 'r')
 connections = file.read().strip().split('\n')
 
 #Millisecond 24: First + Second half
-def create_bridges(links, type):
+def create_bridges(links):
     #queue with all possible bridges and their status quo.
     #if bridge is finished (^= no next links) it will vanish from the queue
     queue = deque([(0, 0, 0, links)])
@@ -29,9 +29,7 @@ def create_bridges(links, type):
                 new_links[link2, link1] -= 1
                 queue.append((link2, strength + link1 + link2, length + 1, new_links))
 
-        if not link_found:
-            if type == "str": yield strength
-            if type == "len": yield length, strength
+        if not link_found: yield length, strength
 
 
 links = Counter()
@@ -40,5 +38,6 @@ for conn in connections:
     links[link1, link2] += 1
     links[link2, link1] += 1
 
-print(max(create_bridges(links, "str")))
-print(max(create_bridges(links, "len"))[1])
+results = list(create_bridges(links))
+print(max([x[1] for x in results]))
+print(max(results)[1])
