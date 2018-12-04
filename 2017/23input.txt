@@ -1,0 +1,32 @@
+set b 81
+set c b
+jnz a 2
+jnz 1 5
+mul b 100
+sub b -100000
+set c b
+sub c -17000
+set f 1     | while True:
+set d 2     |     f = 1, d = 2                    #statement from: #9&#10
+set e 2     |   | while d - b != 0:               #condition from: #22-#24
+set g d     |   |     e = 2                       #statement from: #11
+mul g e     |   |   | while e - b != 0:           #condition from: #18-#20
+sub g b     |   |   |     if d * e - b == 0:      #condition from: #12-#15
+jnz g 2     |   |   |         f = 0               #statement from: #16
+set f 0     |   |   |     e += 1                  #statement from: #17
+sub e -1    |   |   |
+set g e     |   |   |
+sub g b     |   |   |
+jnz g -8    |   |   |
+sub d -1    |   |     d += 1                      #statement from: #21
+set g d     |   |
+sub g b     |   |
+jnz g -13   |   |
+jnz f 2     |     if f == 0:                      #condition from: #25
+sub h -1    |         h += 1                      #statement from: #26
+set g b     |
+sub g c     |
+jnz g 2     |     if b == c: break                #statement from: #27-#29 exit condition
+jnz 1 3     |
+sub b -17   |     b += 17                         #statement from: #31
+jnz 1 -23   |
