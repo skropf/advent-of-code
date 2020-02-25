@@ -1,8 +1,5 @@
 ### DAY 3 - Part 1
 
-# thoughts: create big array where one cable is represented as #, the other as + and intersections
-# with * => find the closest * from the origin point
-
 input = open('03.input', 'r')
 wire1 = input.readline().split(',')
 wire2 = input.readline().split(',')
