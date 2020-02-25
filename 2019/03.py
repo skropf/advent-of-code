@@ -16,8 +16,7 @@ for route1, route2 in zip(wire1, wire2):
 
     distance1 = int(route1[1:])
     for i in range(distance1):
-        last_pos = wirepath1.pop()
-        wirepath1.append(last_pos)
+        last_pos = wirepath1[-1]
 
         if route1[0] == 'U':
             last_pos += 0.00000001
@@ -35,8 +34,7 @@ for route1, route2 in zip(wire1, wire2):
 
     distance2 = int(route2[1:])
     for i in range(distance2):
-        last_pos = wirepath2.pop()
-        wirepath2.append(last_pos)
+        last_pos = wirepath2[-1]
 
         if route2[0] == 'U':
             last_pos += 0.00000001
