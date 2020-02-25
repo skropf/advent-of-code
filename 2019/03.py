@@ -1,8 +1,9 @@
 ### DAY 3 - Part 1
 
-input = open('03.input', 'r')
-wire1 = input.readline().split(',')
-wire2 = input.readline().split(',')
+puzzle = open('03.input', 'r')
+wire1 = puzzle.readline().split(',')
+wire2 = puzzle.readline().split(',')
+puzzle.close()
 
 # lets just trace the two wirepaths and examine both later for closest point to origin
 # we use a number here for both positions, to be able to convert them to sets and use the intersection function
