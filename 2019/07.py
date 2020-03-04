@@ -5,83 +5,84 @@ puzzle = [int(x) for x in puzzle_orig.read().split(',')]
 
 class Amplifier(object):
     def __init__(self, name, puzzle, setting):
+        from copy import copy
         self.name = name
-        self.puzzle = puzzle
+        self.puzzle = copy(puzzle)
         self.setting = setting
         self.first_run = True
+        self.instruction_pointer = 0
 
     def run(self, signal):
-        index = 0
-        while index < len(puzzle):
-            op_code = puzzle[index]
+        while self.instruction_pointer < len(self.puzzle):
+            op_code = self.puzzle[self.instruction_pointer]
             #addition
             if op_code % 100 == 1:
-                if op_code % 1000 > 100: parameter1 = puzzle[index+1]
-                else: parameter1 = puzzle[puzzle[index+1]]
-                if op_code % 10000 > 1000: parameter2 = puzzle[index+2]
-                else: parameter2 = puzzle[puzzle[index+2]]
-                puzzle[puzzle[index+3]] = parameter1 + parameter2
-                index += 4
+                if op_code % 1000 > 100: parameter1 = self.puzzle[self.instruction_pointer+1]
+                else: parameter1 = self.puzzle[self.puzzle[self.instruction_pointer+1]]
+                if op_code % 10000 > 1000: parameter2 = self.puzzle[self.instruction_pointer+2]
+                else: parameter2 = self.puzzle[self.puzzle[self.instruction_pointer+2]]
+                self.puzzle[self.puzzle[self.instruction_pointer+3]] = parameter1 + parameter2
+                self.instruction_pointer += 4
             # multiplication
             elif op_code % 100 == 2:
-                if op_code % 1000 > 100: parameter1 = puzzle[index+1]
-                else: parameter1 = puzzle[puzzle[index+1]]
-                if op_code % 10000 > 1000: parameter2 = puzzle[index+2]
-                else: parameter2 = puzzle[puzzle[index+2]]
-                puzzle[puzzle[index+3]] = parameter1 * parameter2
-                index += 4
+                if op_code % 1000 > 100: parameter1 = self.puzzle[self.instruction_pointer+1]
+                else: parameter1 = self.puzzle[self.puzzle[self.instruction_pointer+1]]
+                if op_code % 10000 > 1000: parameter2 = self.puzzle[self.instruction_pointer+2]
+                else: parameter2 = self.puzzle[self.puzzle[self.instruction_pointer+2]]
+                self.puzzle[self.puzzle[self.instruction_pointer+3]] = parameter1 * parameter2
+                self.instruction_pointer += 4
             # take input and store
             elif op_code % 100 == 3:
                 if self.first_run:
-                    puzzle[puzzle[index+1]] = self.setting
+                    self.puzzle[self.puzzle[self.instruction_pointer+1]] = self.setting
                     self.first_run = False
                 else:
-                    puzzle[puzzle[index+1]] = signal
-                index += 2
+                    self.puzzle[self.puzzle[self.instruction_pointer+1]] = signal
+                self.instruction_pointer += 2
             # outputs value at address
             elif op_code % 100 == 4:
-                if op_code % 1000 > 100: parameter = puzzle[index+1]
-                else: parameter = puzzle[puzzle[index+1]]
+                if op_code % 1000 > 100: parameter = self.puzzle[self.instruction_pointer+1]
+                else: parameter = self.puzzle[self.puzzle[self.instruction_pointer+1]]
                 
-                index += 2
+                self.instruction_pointer += 2
                 return parameter
             # jump if first parameter is not zero
             elif op_code % 100 == 5:
-                if op_code % 1000 > 100: parameter = puzzle[index+1]
-                else: parameter = puzzle[puzzle[index+1]]
-                if op_code % 10000 > 1000: jumping_to = puzzle[index+2]
-                else: jumping_to = puzzle[puzzle[index+2]]
-                if parameter != 0: index = jumping_to
-                else: index += 3
+                if op_code % 1000 > 100: parameter = self.puzzle[self.instruction_pointer+1]
+                else: parameter = self.puzzle[self.puzzle[self.instruction_pointer+1]]
+                if op_code % 10000 > 1000: jumping_to = self.puzzle[self.instruction_pointer+2]
+                else: jumping_to = self.puzzle[self.puzzle[self.instruction_pointer+2]]
+                if parameter != 0: self.instruction_pointer = jumping_to
+                else: self.instruction_pointer += 3
             # jump if first parameter is zero
             elif op_code % 100 == 6:
-                if op_code % 1000 > 100: parameter = puzzle[index+1]
-                else: parameter = puzzle[puzzle[index+1]]
-                if op_code % 10000 > 1000: jumping_to = puzzle[index+2]
-                else: jumping_to = puzzle[puzzle[index+2]]
-                if parameter == 0: index = jumping_to
-                else: index += 3
+                if op_code % 1000 > 100: parameter = self.puzzle[self.instruction_pointer+1]
+                else: parameter = self.puzzle[self.puzzle[self.instruction_pointer+1]]
+                if op_code % 10000 > 1000: jumping_to = self.puzzle[self.instruction_pointer+2]
+                else: jumping_to = self.puzzle[self.puzzle[self.instruction_pointer+2]]
+                if parameter == 0: self.instruction_pointer = jumping_to
+                else: self.instruction_pointer += 3
             # store 1 if less than
             elif op_code % 100 == 7:
-                if op_code % 1000 > 100: parameter1 = puzzle[index+1]
-                else: parameter1 = puzzle[puzzle[index+1]]
-                if op_code % 10000 > 1000: parameter2 = puzzle[index+2]
-                else: parameter2 = puzzle[puzzle[index+2]]
-                if parameter1 < parameter2: puzzle[puzzle[index+3]] = 1
-                else: puzzle[puzzle[index+3]] = 0
-                index += 4
+                if op_code % 1000 > 100: parameter1 = self.puzzle[self.instruction_pointer+1]
+                else: parameter1 = self.puzzle[self.puzzle[self.instruction_pointer+1]]
+                if op_code % 10000 > 1000: parameter2 = self.puzzle[self.instruction_pointer+2]
+                else: parameter2 = self.puzzle[self.puzzle[self.instruction_pointer+2]]
+                if parameter1 < parameter2: self.puzzle[self.puzzle[self.instruction_pointer+3]] = 1
+                else: self.puzzle[self.puzzle[self.instruction_pointer+3]] = 0
+                self.instruction_pointer += 4
             # store 1 if equal
             elif op_code % 100 == 8:
-                if op_code % 1000 > 100: parameter1 = puzzle[index+1]
-                else: parameter1 = puzzle[puzzle[index+1]]
-                if op_code % 10000 > 1000: parameter2 = puzzle[index+2]
-                else: parameter2 = puzzle[puzzle[index+2]]
-                if parameter1 == parameter2: puzzle[puzzle[index+3]] = 1
-                else: puzzle[puzzle[index+3]] = 0
-                index += 4
+                if op_code % 1000 > 100: parameter1 = self.puzzle[self.instruction_pointer+1]
+                else: parameter1 = self.puzzle[self.puzzle[self.instruction_pointer+1]]
+                if op_code % 10000 > 1000: parameter2 = self.puzzle[self.instruction_pointer+2]
+                else: parameter2 = self.puzzle[self.puzzle[self.instruction_pointer+2]]
+                if parameter1 == parameter2: self.puzzle[self.puzzle[self.instruction_pointer+3]] = 1
+                else: self.puzzle[self.puzzle[self.instruction_pointer+3]] = 0
+                self.instruction_pointer += 4
             # break
             elif op_code % 100 == 99:
-                print("Halted.")
+                #print("Halted.")
                 return
             else:
                 ### if printed, something is wrong
@@ -113,10 +114,7 @@ print("Maximum thrust:", max_thrust, "with amplifier setting:", setting)
 puzzle_orig.seek(0)
 puzzle = [int(x) for x in puzzle_orig.read().split(',')]
 
-#puzzle = [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5]
-puzzle = [3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10]
-
-phase_settings = list(permutations([9,8,7,6,5], 5))
+phase_settings = list(permutations([5,6,7,8,9], 5))
 
 amps = {}
 max_thrust, setting = 0, []
@@ -127,24 +125,14 @@ for phase in phase_settings:
     amps['d'] = Amplifier('D', puzzle, phase[3])
     amps['e'] = Amplifier('E', puzzle, phase[4])
 
-    def calc(amps, signal):
-        print(signal)
-        if signal >= 139629729: return signal
-        
-        if signal == None: return
-
-        signal = amps['e'].run(amps['d'].run(amps['c'].run(amps['b'].run(amps['a'].run(signal)))))
-
-        return calc(amps, signal)
+    def calc(amps, signal, prev_signal):
+        if signal == None: return prev_signal
+        return calc(amps, amps['e'].run(amps['d'].run(amps['c'].run(amps['b'].run(amps['a'].run(signal))))), signal)
     
-    try:
-        thrust = calc(amps, 0)
-    except Exception as e:
-        print("error:", e)
+    thrust = calc(amps, 0, 0)
     
     if thrust and max_thrust < thrust:
         max_thrust = thrust
-        setting = tp
-    exit()
+        setting = phase
 
 print("Max Thrust with loopback:", max_thrust, "with setting:", setting)
