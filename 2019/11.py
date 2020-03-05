@@ -1,4 +1,4 @@
-### Day 9 - Part 1
+### Day 11 - Part 1
 
 puzzle_orig = open('09.input', 'r')
 puzzle = [int(x) for x in puzzle_orig.read().split(',')]
@@ -8,7 +8,7 @@ class IntcodeComputer(object):
         from copy import copy
         self.name = name
         self.memory = copy(memory)
-        self.memory += [0 for x in range(len(memory)*100)]
+        self.memory += [0 for x in range(len(memory)*1000)]
         self.instruction_pointer = 0
         self.relative_base = 0
 
@@ -140,6 +140,6 @@ class IntcodeComputer(object):
                 print('Unknown operation', op_code % 100, 'in', self.name + '.', 'Halted.')
                 return
 
-computer = IntcodeComputer("BOOST", puzzle)
+computer = IntcodeComputer("EHPR", puzzle)
 
 computer.run()
