@@ -8,12 +8,12 @@ class IntcodeComputer(object):
         from copy import copy
         self.name = name
         self.memory = copy(memory)
-        self.memory += [0 for x in range(len(memory)*100)]
+        self.memory += [0 for x in range(len(memory)*1000)]
         self.instruction_pointer = 0
         self.relative_base = 0
 
     def run(self, signal):
-        while self.instruction_pointer < len(self.memory):
+        while True:
             op_code = self.memory[self.instruction_pointer]
             #addition
             if op_code % 100 == 1:
