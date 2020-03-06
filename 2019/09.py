@@ -3,12 +3,16 @@
 puzzle_orig = open('09.input', 'r')
 puzzle = [int(x) for x in puzzle_orig.read().split(',')]
 
+#puzzle = [109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99]
+#puzzle = [1102,34915192,34915192,7,4,7,99,0]
+#puzzle = [104,1125899906842624,99]
+
 class IntcodeComputer(object):
     def __init__(self, name, memory):
         from copy import copy
         self.name = name
         self.memory = copy(memory)
-        self.memory += [0 for x in range(len(memory)*100)]
+        self.memory += [0] * len(memory) * 100
         self.instruction_pointer = 0
         self.relative_base = 0
 
@@ -26,7 +30,7 @@ class IntcodeComputer(object):
                 else: parameter2 = self.memory[self.memory[self.instruction_pointer+2]]
                 
                 if op_code % 100000 > 20000: self.memory[self.relative_base+self.memory[self.instruction_pointer+3]] = parameter1 + parameter2
-                if op_code % 100000 > 10000: self.memory[self.instruction_pointer+3] = parameter1 + parameter2
+                elif op_code % 100000 > 10000: self.memory[self.instruction_pointer+3] = parameter1 + parameter2
                 else: self.memory[self.memory[self.instruction_pointer+3]] = parameter1 + parameter2
                 self.instruction_pointer += 4
             # multiplication
@@ -40,7 +44,7 @@ class IntcodeComputer(object):
                 else: parameter2 = self.memory[self.memory[self.instruction_pointer+2]]
                 
                 if op_code % 100000 > 20000: self.memory[self.relative_base+self.memory[self.instruction_pointer+3]] = parameter1 * parameter2
-                if op_code % 100000 > 10000: self.memory[self.instruction_pointer+3] = parameter1 * parameter2
+                elif op_code % 100000 > 10000: self.memory[self.instruction_pointer+3] = parameter1 * parameter2
                 else: self.memory[self.memory[self.instruction_pointer+3]] = parameter1 * parameter2
                 self.instruction_pointer += 4
             # take input and store
@@ -133,7 +137,7 @@ class IntcodeComputer(object):
                 self.instruction_pointer += 2
             # break
             elif op_code % 100 == 99:
-                #print("Halted.")
+                print("Finished running instructions.")
                 return
             else:
                 ### if printed, something is wrong
